@@ -1,0 +1,34 @@
+{
+  "tests": [
+    {
+      "name": "1. Optimization Setup",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest qSOBO_assignment_test.py::test_optimization_setup qSOBO_assignment_test.py::test_parameter_validation qSOBO_assignment_test.py::test_constraint_handling -v",
+      "points": 2
+    },
+    {
+      "name": "2. Results Analysis",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest qSOBO_assignment_test.py::test_optimal_params qSOBO_assignment_test.py::test_min_mass_loss qSOBO_assignment_test.py::test_device_stress_index -v",
+      "points": 2
+    },
+    {
+      "name": "3. Stress Analysis",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest qSOBO_assignment_test.py::test_high_stress_count -v",
+      "points": 2
+    },
+    {
+      "name": "4. Batch Performance",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest qSOBO_assignment_test.py::test_batch_improvements qSOBO_assignment_test.py::test_avg_lower -v",
+      "points": 2
+    },
+    {
+      "name": "5. Batch Diversity",
+      "setup": "pip install -r requirements.txt",
+      "run": "pytest qSOBO_assignment_test.py::test_batch_diversity qSOBO_assignment_test.py::test_most_least_diverse -v",
+      "points": 2
+    }
+  ]
+}

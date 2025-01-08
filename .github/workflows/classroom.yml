@@ -1,0 +1,29 @@
+name: Autograding Tests
+'on':
+  - push
+  - workflow_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Optimization test
+        id: optimization-test
+        uses: classroom-resources/autograding-python-grader@v1
+        with:
+          timeout: 10
+          max-score: 10
+          setup-command: pip install -r requirements.txt
+          test-command: pytest qSOBO_assignment_test.py -v
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          OPTIMIZATION-TEST_RESULTS: "${{steps.optimization-test.outputs.result}}"
+        with:
+          runners: optimization-test

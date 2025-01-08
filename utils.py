@@ -64,3 +64,32 @@ def measure_erosion(pg_rate, sg_rate, current, cg_rate, pf_rate, distance):
 
     y = -(2.58 + outer) / 1.94 + 3.1
     return y
+
+def validate_parameters(parameters):
+    """Validate parameter values before running optimization"""
+    required_fields = ["name", "type", "bounds", "value_type"]
+    try:
+        for param in parameters:
+            if not all(field in param for field in required_fields):
+                raise ValueError(f"Parameter missing required fields: {required_fields}")
+            
+            if param["type"] != "range":
+                raise ValueError(f"Unsupported parameter type: {param['type']}")
+                
+            if len(param["bounds"]) != 2:
+                raise ValueError(f"Invalid bounds for parameter {param['name']}")
+                
+            if param["bounds"][0] >= param["bounds"][1]:
+                raise ValueError(f"Invalid bounds range for parameter {param['name']}")
+    except Exception as e:
+        raise ValueError(f"Parameter validation failed: {e}")
+
+def check_stress_constraint(params):
+    """Check if parameters satisfy the device stress constraint"""
+    try:
+        stress = params["pg_rate"] + params["sg_rate"] + params["current"]
+        return stress <= 750
+    except KeyError as e:
+        raise ValueError(f"Missing parameter for stress calculation: {e}")
+    except Exception as e:
+        raise ValueError(f"Error in stress constraint check: {e}")
